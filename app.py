@@ -27,9 +27,7 @@ y **PCA (Reducción de Dimensionalidad)** desarrollados en el laboratorio de Mac
 @st.cache_resource
 def load_artifacts():
     # Detectar el nombre del modelo
-    model_path = 'artifacts/kmeans_model.pkl' if os.path.exists('artifacts/kmeans_model.pkl') else 'artifacts/best_model.pkl'
-    
-    kmeans = joblib.load(model_path)
+    kmeans = joblib.load('artifacts/kmeans_model.pkl')
     scaler = joblib.load('artifacts/scaler.pkl')
     pca_viz = joblib.load('artifacts/pca_visualizacion.pkl')
     feature_config = joblib.load('artifacts/feature_config.pkl')
