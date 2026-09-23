@@ -26,7 +26,6 @@ y **PCA (Reducción de Dimensionalidad)** desarrollados en el laboratorio de Mac
 # ---------------------------------------------------------
 @st.cache_resource
 def load_artifacts():
-    # Detectar el nombre del modelo
     kmeans = joblib.load('artifacts/kmeans_model.pkl')
     scaler = joblib.load('artifacts/scaler.pkl')
     pca_viz = joblib.load('artifacts/pca_visualizacion.pkl')
@@ -52,7 +51,7 @@ user_num_values = {}
 
 if mode == "Seleccionar Canción Existente":
     st.sidebar.subheader("🔍 Buscar Canción")
-    df_data['song_label'] = df_data['track_name'] + " - " + df_data['artists']
+    df_data['song_label'] = df_data['track_name'].astype(str) + " - " + df_data['artists'].astype(str)
     selected_song_label = st.sidebar.selectbox("Selecciona una pista:", df_data['song_label'].unique())
     
     # Extraer fila seleccionada
@@ -72,11 +71,11 @@ else:
 # ---------------------------------------------------------
 # 4. Procesamiento y Predicción
 # ---------------------------------------------------------
-# 1. Crear matriz numerica y escalarla
+# 1. Crear matriz numérica y escalarla
 df_user_num = pd.DataFrame([user_num_values])[num_cols]
 X_user_num_scaled = scaler.transform(df_user_num)
 
-# 2. Reconstruir vector completo de características (matching feature_names)
+# 2. Reconstruir vector completo de características
 df_user_scaled = pd.DataFrame(X_user_num_scaled, columns=num_cols)
 
 # Rellenar columnas binarias/categóricas faltantes con ceros
@@ -113,7 +112,6 @@ with col2:
     
     # Prepara dataset para gráfico de dispersión con Plotly
     if 'pca_x' not in df_data.columns:
-        # Calcular coordenadas PCA para todo el dataset si no están
         X_all_num = scaler.transform(df_data[num_cols])
         df_all_scaled = pd.DataFrame(X_all_num, columns=num_cols)
         for col in feature_names:
